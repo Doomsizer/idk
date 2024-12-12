@@ -27,6 +27,14 @@ Posts:
                <td>{{ post.heading }}</td>
                <td>{{ post.time_created }}</td>
                <td>{{ post.preview }}</td>
+               <td>
+                    {% if perms.simpleapp.update_post %}
+                    <a href="{% url 'post_update' pk=post.id %}">Изменить</a>
+                    {% endif %}
+                    {% if perms.simpleapp.delete_post %}
+                    <a href="{% url 'post_delete' pk=post.id %}">Удалить</a>
+                    {% endif %}
+                </td>
            </tr>
            {% endfor %}
 

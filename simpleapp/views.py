@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.views.generic import (
     ListView, DetailView, CreateView, UpdateView, DeleteView
 )
@@ -38,31 +39,36 @@ class PostDetail(DetailView):
         return context
 
 
-class PostCreate(CreateView):
+class PostCreate(CreateView, PermissionRequiredMixin):
+    permission_required = ('simpleapp.add_post')
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
 
 
-class AuthorCreate(CreateView):
+class AuthorCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('simpleapp.add_author')
     form_class = AuthorForm
     model = Author
     template_name = 'post_edit.html'
 
 
-class CategoryCreate(CreateView):
+class CategoryCreate(PermissionRequiredMixin,CreateView):
+    permission_required = ('simpleapp.add_category')
     form_class = CategoryForm
     model = Category
     template_name = 'post_edit.html'
 
 
-class PostUpdate(UpdateView):
+class PostUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = ('simpleapp.add_post')
     form_class = PostForm
     model = Post
     template_name = 'post_edit.html'
 
 
-class PostDelete(DeleteView):
+class PostDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('simpleapp.delete_post')
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('posts')
